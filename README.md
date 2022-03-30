@@ -113,4 +113,77 @@ sudo minikube status
     k get pods -n custom-namespace
     k get pods --all-namespaces
 
+# Replica Controllers configuration
+
+    k create -f mypod-rc.yml 
+   # Delete pod then watch it get recreated
+    k delete mypod-b65bg
+    k get pods
+    k get rc
+    k create -f mypod-replicaset.yml
+    k get rs
+    k get pods
+    k scale rs mypod --replicas=10
+    k delete -f mypod-rc.yml
+    k delete -f mypod-replicaset.yml
+    k get pods
+
+# Re-create, and set Daemon
+
+    k create -f mypod-replicaset.yml
+    k get ds
+    k get node --show-labels
+    k get node -L disk
+    k label node minikube disk=ssd
+    k get ds
+    k get pod
+    k label node minikube disk=hdd --overwrite
+    k get node -L disk
+    k label node minikube disk=ssd --overwrite
+    k get pod
+# Creating batch jobs
+
+    k create -f job.yml
+    k get jobs
+    k logs batch-job-tqvmm -f
+
+# Creating multi Jobs
+
+    k create -f multi-job.yml
+    k get jobs
+    k get pods
+    k get cronjobs  
+
+# Creating cronjobs  
+    
+    k create -f cronjob.yml
+    k get cronjob
+
+#  Kubernet cluster events
+
+   k get events
+   k get kubectl -w
+   k get events -n kube-system
+
+# Service ( nginx / loadbalacer )
+    
+    k create -f mypod-svc.yml
+    k get svc
+    curl 10.101.68.169
+    k describe svc podsvc
+
+# DNS info
+
+    k exec mypod -- env
+    k exec mypod -- cat /etc/resolv.conf
+    k exec mypod -- curl 10.101.68.69
+    k exec mypod -- curl podsvc
+#  Kubernetes Volumes, fixing pods
+
+    k create -f mongodb.yml
+    k get pod
+
+    
+
+
 
